@@ -5,7 +5,7 @@ export const Container = styled.div``
 
 export const Header = styled.header`
 padding: 32px 0;
-background: #28262e;
+border: solid 1px #131313;
 
 `;
 
@@ -55,7 +55,7 @@ div{
 
     a{
         text-decoration: none;
-        color: #ff9000;
+        color: #51ddef;
 
         &:hover{
             opacity: 0.7;
@@ -80,14 +80,14 @@ h1{
 
 p{
     margin-top: 8px;
-    color: #ff9000;
+    color: #2BC4DA;
     display: flex;
     font-weight: bold;
 
     span + span {
         margin-left: 8px;
         padding-left: 8px;
-        border-left: 1px solid #ff9000;
+        border-left: 1px solid #51ddef;
     }
 }
 `;
@@ -117,7 +117,7 @@ div{
         left: 0;
         top: 10%;
         content: '';
-        background: #ff9000;
+        background: #51ddef;
     }
 
     img{
@@ -138,7 +138,7 @@ div{
         color: #999591;
 
         svg{
-        color: #ff9000;
+        color: #51ddef;
         margin-right: 8px;
     }
     }
@@ -161,7 +161,7 @@ span{
         color: #f4ede8;
 
         svg{
-        color: #ff9000;
+        color: #51ddef;
         margin-right: 8px;
     }
     }
@@ -190,7 +190,7 @@ span{
 
 export const Calendar = styled.aside`
 .DayPicker {
-  background: #28262e;
+  background: #e5e5e5;
   border-radius: 10px;
 }
 
@@ -214,15 +214,20 @@ export const Calendar = styled.aside`
   height: 40px;
 }
 
+.DayPicker-Caption{
+    color: #2bc4da;
+}
+
 .DayPicker-Day--available:not(.DayPicker-Day--outside) {
-  background: #3e3b47;
+  background: #fff;
   border-radius: 10px;
-  color: #fff;
+  color: #131313;
 }
 
 .DayPicker:not(.DayPicker--interactionDisabled)
   .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
-  background: ${shade(0.2, '#3e3b47')};
+  background: ${shade(0.3, '#fff')};
+  color: #131313;
 }
 
 .DayPicker-Day--today {
@@ -230,12 +235,12 @@ export const Calendar = styled.aside`
 }
 
 .DayPicker-Day--disabled {
-  color: #666360 !important;
+  color: #131313 !important;
   background: transparent !important;
 }
 
 .DayPicker-Day--selected {
-  background: #ff9000 !important;
+  background: #51ddef !important;
   border-radius: 10px;
   color: #232129 !important;
 }

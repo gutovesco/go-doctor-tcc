@@ -4,6 +4,7 @@ import signUpBackground from '../../assets/background1.svg'
 
 export const Container = styled.div`
 height: 100vh;
+width: 98%;
 display: flex;
 `;
 
@@ -37,7 +38,7 @@ justify-content: center;
 animation: ${appearFromRight} 1s;
 
 form{
-        width: 390px;
+        width: 350px;
         text-align: center;
 
         h1 {
@@ -82,5 +83,8 @@ form{
 
 export const Background = styled.div`
 flex: 1;
+margin-top: 50px;
 background: url(${signUpBackground}) no-repeat center;
+background-size: contain;
+margin-left: 100px;
 `;  

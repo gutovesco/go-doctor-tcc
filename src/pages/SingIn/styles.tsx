@@ -81,4 +81,5 @@ animation: ${appearFromLeft} 1s;
 export const Background = styled.div`
 flex: 1;
 background: url(${signInBackground}) no-repeat center;
+background-size: 80%
 `;  

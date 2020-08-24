@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Container, Header, HeaderContent, Profile, Content, NextAppointment, Appointment, Section, Calendar, Schedule } from './styles'
-import logoImg from '../../assets/logo.svg'
+import logoImg from '../../assets/logo.png'
 import { FiPower, FiClock } from 'react-icons/fi';
 import { useAuth } from '../../hooks/AuthContext';
 import DayPicker, { DayModifiers } from 'react-day-picker';
@@ -119,13 +119,13 @@ const Dashboard: React.FC = () => {
         <Container>
             <Header>
                 <HeaderContent>
-                    <img src={logoImg} alt="logo"></img>
+                    <img style={{width: 100, height: 100}} src={logoImg} alt="logo"></img>
 
                     <Profile>
-                        <img src={user.avatar_url} alt={user.name}></img>
+                        <img src={user.avatar_url !== undefined ? user.avatar_url : logoImg} alt=''></img>
                         <div>
-                            <span>Bem-vindo</span>
-                            <Link to="/profile"><strong>{user.name}</strong></Link>
+                            <span style={{color: '#131313'}}>Bem-vindo</span>
+                            <Link to="/profile"><strong style={{color:'#2BC4DA'}}>{user.name}</strong></Link>
                         </div>
                     </Profile>
                     <button type="button" onClick={signOut}>
@@ -136,7 +136,7 @@ const Dashboard: React.FC = () => {
 
             <Content>
                 <Schedule>
-                    <h1>Horários Agendados</h1>
+                    <h1 style={{color: '#131313'}}>Horários Agendados</h1>
                     <p>
                         {isToday(selectedDate) && <span>Hoje</span>}
                         <span>{selectedDateAsText}</span>
