@@ -4,15 +4,14 @@ import { shade } from 'polished'
 export const Container = styled.div`
 >header{
     height: 144px;
-    background: #28262e;
 
     display: flex;
     align-items: center;
 
     div{
         width: 100%;
-        max-width: 1120px;
         margin: 0 auto;
+        margin-left: 50px;
     }
 
     svg{
@@ -54,7 +53,7 @@ form{
             transition: color 0.2s;
 
             &:hover{
-                color: ${shade(0.2, '#ff9000')}
+                color: ${shade(0.2, '#2bc4da')}
             }
         }
         
@@ -80,7 +79,7 @@ label{
     position: absolute;
     width: 48px;
     height: 48px;
-    background: #ff9000;
+    background: #2bc4da;
     border-radius: 50%;
     right: 0;
     bottom: 0;
@@ -102,7 +101,7 @@ svg{
     color: #28262e;
 
     &:hover{
-        color: ${shade(0.2, '#ff9000')}
+        color: ${shade(0.2, '#2bc4da')}
     }
 }
 }

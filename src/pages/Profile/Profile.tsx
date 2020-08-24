@@ -125,7 +125,7 @@ const Profile: React.FC = () => {
 
                     </AvatarInput>
 
-                    <h1>Meu perfil</h1>
+                    <h1 style={{color: '#131313'}}>Meu perfil</h1>
 
                     <Input name="name" icon={FiUser} placeholder="Nome"></Input>
                     <Input name="email" icon={FiMail} placeholder="Email"></Input>
