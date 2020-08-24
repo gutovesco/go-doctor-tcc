@@ -38,9 +38,12 @@ align-items: center;
 margin-left: 80px;
 
 img{
-    width: 56px;
-    height: 56px;
+    width: 63px;
+    height: 63px;
     border-radius: 50%;
+background: #f7f7f7;
+box-shadow:  7px 7px 14px #e6e6e6, 
+             -7px -7px 14px #ffffff;
 }
 
 div{
@@ -158,7 +161,7 @@ span{
         margin-left: auto;
         display: flex;
         align-items: center;
-        color: #f4ede8;
+        color: #2bc4da;
 
         svg{
         color: #51ddef;
@@ -168,11 +171,14 @@ span{
 
     div{
         flex: 1;
-    background: #3e3b47;
+
     display: flex;
     align-items: center;
     padding: 16px 16px;
-    border-radius: 10px;
+    border-radius: 11px;
+background: #f7f7f7;
+box-shadow:  9px 9px 18px #e3e3e3, 
+             -9px -9px 18px #ffffff;
     margin-left: 24px;
     }
 
@@ -180,18 +186,23 @@ span{
         width: 56px;
         height: 56px;
         border-radius: 50%;
+        background: #fff;
+box-shadow:  13px 13px 26px #fff, 
+             -13px -13px 26px #ffffff;
     }
 
     strong{
         margin-left: 24px;
-        color: #fff;
+        color: #2bc4da;
     }
 `;
 
 export const Calendar = styled.aside`
 .DayPicker {
-  background: #e5e5e5;
-  border-radius: 10px;
+    border-radius: 36px;
+    background: #f7f7f7;
+    box-shadow:  13px 13px 26px #d7d7d7, 
+    -13px -13px 26px #ffffff;
 }
 
 .DayPicker-wrapper {

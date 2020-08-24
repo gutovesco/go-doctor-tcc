@@ -28,7 +28,7 @@ span{
 
 export const Container = styled.div<ContainerProps>`
     background: #fff;
-    border-radius: 10px;
+    border-radius: 11px;
     border: 2px solid #18CBC1;
     padding: 16px;
     width: 100%;

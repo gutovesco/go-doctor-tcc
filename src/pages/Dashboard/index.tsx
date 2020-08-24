@@ -181,8 +181,8 @@ const Dashboard: React.FC = () => {
 
                     <Section>
                         <strong>Tarde</strong>
-
-                        {morningAppointments.length === 0 && (
+                        {console.log(afternoonAppointments)}
+                        {afternoonAppointments.length === 0 && (
                             <p>Nenhum agendamento neste período</p>
                         )}
 

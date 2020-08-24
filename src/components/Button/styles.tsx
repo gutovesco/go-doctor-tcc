@@ -3,18 +3,19 @@ import {shade} from 'polished'
 
 export const Container = styled.button`
 
-            background: #18CBC1;
+border-radius: 11px;
+background: #3ee8dc;
             height: 56px;
-            border-radius: 10px;
-            border: 0;
+            border: 2px solid #3ee8dc ;
             padding: 0 16px;
-            color: #fff;
+            color: #131313;
             width: 100%;
             font-weight: 500;
             margin-top: 16px;
             transition: background-color 0.2s;
 
             &:hover {
-                background: ${shade(0.1, '#18CBC1')}
+                background: ${shade(0.1, '#3ee8dc')};
+                color: #fff;
             }
 `;
