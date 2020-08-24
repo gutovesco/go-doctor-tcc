@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { Container, Header, HeaderContent, Profile, Content, NextAppointment, Appointment, Section, Calendar, Schedule } from './styles'
 import logoImg from '../../assets/logo.png'
+import logoImg2 from '../../assets/logo4.png'
 import { FiPower, FiClock } from 'react-icons/fi';
 import { useAuth } from '../../hooks/AuthContext';
 import DayPicker, { DayModifiers } from 'react-day-picker';
@@ -119,7 +120,7 @@ const Dashboard: React.FC = () => {
         <Container>
             <Header>
                 <HeaderContent>
-                    <img style={{width: 100, height: 100}} src={logoImg} alt="logo"></img>
+                    <img style={{width: 150, height: 150}} src={logoImg2} alt="logo"></img>
 
                     <Profile>
                         <img src={user.avatar_url !== undefined ? user.avatar_url : logoImg} alt=''></img>
