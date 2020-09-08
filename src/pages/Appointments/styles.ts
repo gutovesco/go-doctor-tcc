@@ -20,6 +20,7 @@ align-items: center;
 }
 
 button{
+    margin-left: auto;
     background: transparent;
     border: 0;
 }
@@ -34,6 +35,26 @@ svg{
         }
 }
 `;
+
+export const ProviderContainer = styled.div`
+background: #fff;
+box-shadow:  7px 7px 14px #e6e6e6, 
+             -7px -7px 14px #ffffff;
+display: flex;
+align-items: center;
+width: 600px;
+height: 100px;
+margin-bottom: 20px;
+border-radius: 20px;
+cursor: pointer;
+
+&:hover{
+        transform: translateY(-10px);
+        transform: translateX(10px);
+        transition: 0.2s;
+        }
+`;
+
 
 export const Profile = styled.div`
 display: flex;

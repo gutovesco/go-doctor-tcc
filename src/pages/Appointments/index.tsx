@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { Container, Header, HeaderContent, Profile, Content, NextAppointment, Appointment, Section, Calendar, Schedule, AppointmentsTab } from './styles'
+import { Container, Header, HeaderContent, Profile, Content, ProviderContainer, Appointment, Section, Calendar, Schedule, AppointmentsTab } from './styles'
 import logoImg from '../../assets/logo.png'
 import logoImg2 from '../../assets/logo4.png'
-import { FiPower, FiClock, FiChevronLeft } from 'react-icons/fi';
+import { FiPower, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useAuth } from '../../hooks/AuthContext';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -27,13 +27,27 @@ interface Appointment {
     }
 }
 
-const Dashboard: React.FC = () => {
+export interface Provider {
+    id: string;
+    name: string;
+    avatar_url: string;
+}
+
+const AppointmentPage: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [currentMonth, setCurrentMonth] = useState(new Date())
     const [monthAvailability, setMonthAvailability] = useState<MonthAvailability[]>([])
     const [appointments, setAppointments] = useState<Appointment[]>([])
+    const [providers, setProviders] = useState<Provider[]>([])
 
     const { signOut, user } = useAuth()
+
+    useEffect(() => {
+        api.get('providers').then(response => {
+            setProviders(response.data)
+        })
+        console.log(providers)
+    }, [providers])
 
     const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
         if (modifiers.available && !modifiers.disabled) {
@@ -120,8 +134,11 @@ const Dashboard: React.FC = () => {
         <Container>
             <Header>
                 <HeaderContent>
-                
-                    <img style={{ width: 150, height: 150 }} src={logoImg2} alt="logo"></img>
+                    <Link to="/dashboard">
+                        <FiChevronLeft color="#131313" size={30} />
+                    </Link>
+
+                    <img style={{ width: 150, height: 150, marginLeft: 20 }} src={logoImg2} alt="logo"></img>
 
                     <Profile>
                         <img src={user.avatar_url !== undefined ? user.avatar_url : logoImg} alt=''></img>
@@ -131,10 +148,6 @@ const Dashboard: React.FC = () => {
                         </div>
                     </Profile>
 
-                    <Link to="/appointments" style={{ marginLeft: 'auto', marginRight: 25, textDecoration: 'none' }}>
-                        <AppointmentsTab>Agendamentos</AppointmentsTab>
-                    </Link>
-
                     <button type="button" onClick={signOut}>
                         <FiPower />
                     </button>
@@ -143,67 +156,25 @@ const Dashboard: React.FC = () => {
 
             <Content>
                 <Schedule>
-                    <h1 style={{ color: '#131313' }}>Horários Agendados</h1>
-                    <p>
-                        {isToday(selectedDate) && <span>Hoje</span>}
-                        <span>{selectedDateAsText}</span>
-                        <span>{selectedWeekDay}</span>
-                    </p>
+                    <h1 style={{ color: '#131313' }}>Médicos disponíveis</h1>
 
-                    {isToday(selectedDate) && nextAppointment && (
-                        <NextAppointment>
-                            <strong>Agendamento a seguir</strong>
-                            <div>
-                                <img src={nextAppointment.user.avatar_url} alt={nextAppointment.user.name}></img>
-                                <strong>{nextAppointment.user.name}</strong>
-                                <span>
-                                    <FiClock />
-                                    {nextAppointment.hourFormatted}
-                                </span>
-                            </div>
-                        </NextAppointment>
-                    )}
 
                     <Section>
-                        <strong>Manhã</strong>
+                        {providers.map((item) => {
+                            console.log(item)
+                            return (
+                                <ProviderContainer>
+                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <img style={{ marginLeft: 15, width: 65, height: 65, borderRadius: 30 }} src={item.avatar_url !== undefined && item.avatar_url !== undefined ? item.avatar_url : 'https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png'}></img>
+                                        <span style={{ marginLeft: 15, color: "#131313" }}>{item.name}</span>
+                                    </div>
+                                    <div style={{marginLeft: 'auto', marginRight: 20}}>
+                                        <FiChevronRight color="#e7e7e7" size={30} />
+                                    </div>
 
-                        {morningAppointments.length === 0 && (
-                            <p>Nenhum agendamento neste período</p>
-                        )}
-
-                        {morningAppointments.map(appointment => (
-                            <Appointment key={appointment.id}>
-                                <span>
-                                    <FiClock />
-                                    {appointment.hourFormatted}
-                                </span>
-                                <div>
-                                    <img src={appointment.user.avatar_url === null ? 'https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg?ssl=1' : appointment.user.avatar_url} alt={appointment.user.name}></img>
-                                    <strong>{appointment.user.name}</strong>
-                                </div>
-                            </Appointment>
-                        ))}
-                    </Section>
-
-                    <Section>
-                        <strong>Tarde</strong>
-                        {console.log(afternoonAppointments)}
-                        {afternoonAppointments.length === 0 && (
-                            <p>Nenhum agendamento neste período</p>
-                        )}
-
-                        {afternoonAppointments.map(appointment => (
-                            <Appointment key={appointment.id}>
-                                <span>
-                                    <FiClock />
-                                    {appointment.hourFormatted}
-                                </span>
-                                <div>
-                                    <img src={appointment.user.avatar_url === null ? 'https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg?ssl=1' : appointment.user.avatar_url} alt={appointment.user.name}></img>
-                                    <strong>{appointment.user.name}</strong>
-                                </div>
-                            </Appointment>
-                        ))}
+                                </ProviderContainer>
+                            )
+                        })}
                     </Section>
 
                 </Schedule>
@@ -234,4 +205,4 @@ const Dashboard: React.FC = () => {
     )
 }
 
-export default Dashboard;
+export default AppointmentPage;
