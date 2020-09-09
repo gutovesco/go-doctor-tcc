@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { Container, Header, HeaderContent, Profile, Content, ProviderContainer, Appointment, Section, Calendar, Schedule, AppointmentsTab } from './styles'
+import { Container, Header, HeaderContent, Profile, Content, ProviderContainer, Section, Calendar, Schedule, HourContainer, CreateAppointmentButton, CreateAppointmentButtonText } from './styles'
 import logoImg from '../../assets/logo.png'
 import logoImg2 from '../../assets/logo4.png'
 import { FiPower, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -10,7 +10,7 @@ import api from '../../services/api';
 import { isToday, format, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { parseISO } from 'date-fns/esm';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 interface MonthAvailability {
     day: number;
@@ -27,6 +27,11 @@ interface Appointment {
     }
 }
 
+interface AvailabilityItem {
+    hour: number;
+    available: boolean
+}
+
 export interface Provider {
     id: string;
     name: string;
@@ -34,13 +39,18 @@ export interface Provider {
 }
 
 const AppointmentPage: React.FC = () => {
+    const { signOut, user } = useAuth()
+
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [currentMonth, setCurrentMonth] = useState(new Date())
     const [monthAvailability, setMonthAvailability] = useState<MonthAvailability[]>([])
     const [appointments, setAppointments] = useState<Appointment[]>([])
     const [providers, setProviders] = useState<Provider[]>([])
+    const [availability, setAvailability] = useState<AvailabilityItem[]>([])
+    const [selectedProvider, setSelectedProvider] = useState(user.id)
+    const [selectedHour, setSelectedHour] = useState(0)
 
-    const { signOut, user } = useAuth()
+    const history = useHistory()
 
     useEffect(() => {
         api.get('providers').then(response => {
@@ -48,6 +58,18 @@ const AppointmentPage: React.FC = () => {
         })
         console.log(providers)
     }, [providers])
+
+    useEffect(() => {
+        api.get(`providers/${selectedProvider}/day-availability`, {
+            params: {
+                year: selectedDate.getFullYear(),
+                month: selectedDate.getMonth() + 1,
+                day: selectedDate.getDate(),
+            }
+        }).then(response => {
+            setAvailability(response.data)
+        })
+    }, [selectedDate, selectedProvider])
 
     const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
         if (modifiers.available && !modifiers.disabled) {
@@ -100,41 +122,31 @@ const AppointmentPage: React.FC = () => {
         return dates
     }, [currentMonth, monthAvailability])
 
-    const selectedDateAsText = useMemo(() => {
-        return format(selectedDate, "'Dia' dd 'de' MMMM", {
-            locale: ptBR
+    const morningAvailability = useMemo(() => {
+        return availability.filter(({ hour }) => hour < 12).map(({ hour, available }) => {
+            return {
+                hour,
+                available,
+                hourFormatted: format(new Date().setHours(hour), 'HH:00')
+            }
         })
-    }, [selectedDate])
+    }, [availability])
 
-    const selectedWeekDay = useMemo(() => {
-        return format(selectedDate, 'cccc', {
-            locale: ptBR
+    const afternoonAvailability = useMemo(() => {
+        return availability.filter(({ hour }) => hour >= 12).map(({ hour, available }) => {
+            return {
+                hour,
+                available,
+                hourFormatted: format(new Date().setHours(hour), 'HH:00')
+            }
         })
-    }, [selectedDate])
-
-    const morningAppointments = useMemo(() => {
-        return appointments.filter(appointment => {
-            return parseISO(appointment.date).getHours() < 12
-        })
-    }, [appointments])
-
-    const afternoonAppointments = useMemo(() => {
-        return appointments.filter(appointment => {
-            return parseISO(appointment.date).getHours() > 10
-        })
-    }, [appointments])
-
-    const nextAppointment = useMemo(() => {
-        return appointments.find(appointment =>
-            isAfter(parseISO(appointment.date), new Date()),
-        );
-    }, [appointments])
+    }, [availability])
 
     return (
         <Container>
             <Header>
                 <HeaderContent>
-                    <Link to="/dashboard">
+                    <Link to="/appointments">
                         <FiChevronLeft color="#131313" size={30} />
                     </Link>
 
@@ -163,12 +175,20 @@ const AppointmentPage: React.FC = () => {
                         {providers.map((item) => {
                             console.log(item)
                             return (
-                                <ProviderContainer>
+                                <ProviderContainer onClick={() => {
+                                    /**
+                                     * history.push({
+                                    pathname: '/appointment-info',
+                                    state: { item: item, selectedDate: selectedDate }
+                                })
+                                     */
+                                    setSelectedProvider(item.id)
+                                }}>
                                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <img style={{ marginLeft: 15, width: 65, height: 65, borderRadius: 30 }} src={item.avatar_url !== undefined && item.avatar_url !== undefined ? item.avatar_url : 'https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png'}></img>
                                         <span style={{ marginLeft: 15, color: "#131313" }}>{item.name}</span>
                                     </div>
-                                    <div style={{marginLeft: 'auto', marginRight: 20}}>
+                                    <div style={{ marginLeft: 'auto', marginRight: 20 }}>
                                         <FiChevronRight color="#e7e7e7" size={30} />
                                     </div>
 
@@ -178,28 +198,53 @@ const AppointmentPage: React.FC = () => {
                     </Section>
 
                 </Schedule>
-                <Calendar>
-                    <DayPicker weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
-                        fromMonth={new Date()}
-                        disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
-                        modifiers={{ available: { daysOfWeek: [1, 2, 3, 4, 5] } }}
-                        onDayClick={handleDateChange}
-                        onMonthChange={handleMonthChange}
-                        selectedDays={selectedDate}
-                        months={['Janeiro',
-                            'Fevereiro',
-                            'Março',
-                            'Abril',
-                            'Maio>',
-                            'Junho',
-                            'Julho',
-                            'Agosto',
-                            'Setembro',
-                            'Outubro',
-                            'Novembro',
-                            'Dezembro',
-                        ]} />
-                </Calendar>
+                <Section>
+                    <Calendar>
+                        <DayPicker weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
+                            fromMonth={new Date()}
+                            disabledDays={[{ daysOfWeek: [0, 6] }, ...disabledDays]}
+                            modifiers={{ available: { daysOfWeek: [1, 2, 3, 4, 5] } }}
+                            onDayClick={handleDateChange}
+                            onMonthChange={handleMonthChange}
+                            selectedDays={selectedDate}
+                            months={['Janeiro',
+                                'Fevereiro',
+                                'Março',
+                                'Abril',
+                                'Maio>',
+                                'Junho',
+                                'Julho',
+                                'Agosto',
+                                'Setembro',
+                                'Outubro',
+                                'Novembro',
+                                'Dezembro',
+                            ]} />
+                    </Calendar>
+                    <span style={{ marginTop: 10, marginBottom: 10, color: '#00d4ff', marginLeft: 10, fontSize: 22 }}>Manhã</span>
+                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: 20 }}>
+                        {morningAvailability.map(({ hour, hourFormatted, available }) => (
+                            <HourContainer key={hourFormatted} onClick={() => setSelectedHour(hour)}>
+                                <span style={{ margin: 'auto', color: "#131313" }}>{hourFormatted}</span>
+                            </HourContainer>
+                        ))}
+                    </div>
+
+                    <span style={{ marginTop: 10, marginBottom: 10, color: '#00d4ff', marginLeft: 10, fontSize: 22 }}>Tarde</span>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        {afternoonAvailability.map(({ hour, hourFormatted, available }) => (
+                            <HourContainer key={hourFormatted} onClick={() => setSelectedHour(hour)}>
+                                <span style={{ margin: 'auto', color: "#131313" }}>{hourFormatted}</span>
+                            </HourContainer>
+                        ))}
+                    </div>
+
+                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 50}}>
+                        <CreateAppointmentButton>
+                            <CreateAppointmentButtonText>Marcar consulta</CreateAppointmentButtonText>
+                        </CreateAppointmentButton>
+                    </div>
+                </Section>
             </Content>
         </Container>
     )

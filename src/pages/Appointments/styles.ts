@@ -42,7 +42,7 @@ box-shadow:  7px 7px 14px #e6e6e6,
              -7px -7px 14px #ffffff;
 display: flex;
 align-items: center;
-width: 600px;
+width: 550px;
 height: 100px;
 margin-bottom: 20px;
 border-radius: 20px;
@@ -91,24 +91,37 @@ div{
 }
 `;
 
-export const AppointmentsTab = styled.text`
-    color: #131313;
-    text-decoration: none;
-
-    &:hover{
-        color: #51ddef;
-        }
-`;
-
 export const Content = styled.div`
 max-width: 1120px;
 margin: 64px auto;
 display: flex;
 `;
 
+export const HourContainer = styled.button`
+border-radius: 8px;
+background: #ffffff;
+box-shadow:  -9px 9px 15px #e5e5e5, 
+             9px -9px 15px #fff;
+display: flex;
+align-items: center;
+width: 90px;
+height: 45px;
+border-radius: 6px;
+cursor: pointer;
+margin-top: 20px;
+margin-left: 10px;
+outline: none;
+border: none;
+
+&:hover{
+        transform: translateX(5px);
+        transition: 0.2s;
+        }
+`; 
+
 export const Schedule = styled.div`
 flex: 1;
-margin-right: 120px;
+margin-right: 40px;
 
 h1{
     font-size: 36px;
@@ -128,119 +141,43 @@ p{
 }
 `;
 
-export const NextAppointment = styled.div`
-margin-top: 64px;
-
-strong{
-    color: #999591;
-    font-size: 20px;
-    font-weight: 400;
-}
-
-div{
-    background: #3e3b47;
-    display: flex;
-    align-items: center;
-    padding: 16px 16px;
-    border-radius: 10px;
-    margin-top: 24px;
-    position: relative;
-
-    &::before{
-        position: absolute;
-        height: 80px;
-        width: 1px;
-        left: 0;
-        top: 10%;
-        content: '';
-        background: #51ddef;
-    }
-
-    img{
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-    }
-
-    strong{
-        margin-left: 24px;
-        color: #fff;
-    }
-
-    span{
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        color: #999591;
-
-        svg{
-        color: #51ddef;
-        margin-right: 8px;
-    }
-    }
-    
-}
-`;
-
-export const Appointment = styled.div`
-display: flex;
+export const CreateAppointmentButton = styled.button`
+height: 46px;
+background: linear-gradient(90deg, rgba(86,213,245,1) 0%, rgba(89,216,242,1) 100%);
+border-radius: 10px;
 align-items: center;
+margin: 0 auto;
+justify-content: center;
+width: 300px;
+height: 50px;
+cursor: pointer;
+border: none;
+outline: none;
 
-& + div{
-    margin-top: 16px;
+    &:hover{
+        background: ${shade(0.1, '#59d8f2')};
 }
-
-span{
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        color: #2bc4da;
-
-        svg{
-        color: #51ddef;
-        margin-right: 8px;
-    }
-    }
-
-    div{
-        flex: 1;
-
-    display: flex;
-    align-items: center;
-    padding: 16px 16px;
-    border-radius: 11px;
-background: #f7f7f7;
-box-shadow:  9px 9px 18px #e3e3e3, 
-             -9px -9px 18px #ffffff;
-    margin-left: 24px;
-    }
-
-    img{
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: #fff;
-box-shadow:  13px 13px 26px #fff, 
-             -13px -13px 26px #ffffff;
-    }
-
-    strong{
-        margin-left: 24px;
-        color: #2bc4da;
-    }
 `;
+
+export const CreateAppointmentButtonText = styled.span`
+font-size: 16px;
+color: #fff;
+margin: 0px auto;
+`;
+
 
 export const Calendar = styled.aside`
+margin-bottom: 15px;
 .DayPicker {
     border-radius: 36px;
-    background: #f7f7f7;
+    background: #fff;
     box-shadow:  13px 13px 26px #e7e7e7, 
     -13px -13px 26px #ffffff;
 }
 
 .DayPicker-wrapper {
   padding-bottom: 0;
-  width: 400px;
+  width: 450px;
   padding-right: 10px;
 }
 
@@ -286,7 +223,7 @@ export const Calendar = styled.aside`
 }
 
 .DayPicker-Day--selected {
-  background: #51ddef !important;
+    background: #00d4ff!important;
   border-radius: 10px;
   color: #232129 !important;
 }
@@ -294,6 +231,7 @@ export const Calendar = styled.aside`
 
 export const Section = styled.section`
 margin-top: 48px;
+width: 500px;
 
 >strong{
     color: #999591;

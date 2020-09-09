@@ -212,7 +212,7 @@ box-shadow:  13px 13px 26px #fff,
 export const Calendar = styled.aside`
 .DayPicker {
     border-radius: 36px;
-    background: #f7f7f7;
+    background: #fff;
     box-shadow:  13px 13px 26px #e7e7e7, 
     -13px -13px 26px #ffffff;
 }
