@@ -36,6 +36,7 @@ export interface Provider {
     id: string;
     name: string;
     avatar_url: string;
+    avatar: string;
 }
 
 const AppointmentPage: React.FC = () => {
@@ -56,8 +57,7 @@ const AppointmentPage: React.FC = () => {
         api.get('providers').then(response => {
             setProviders(response.data)
         })
-        console.log(providers)
-    }, [providers])
+    }, [])
 
     useEffect(() => {
         api.get(`providers/${selectedProvider}/day-availability`, {
@@ -101,7 +101,6 @@ const AppointmentPage: React.FC = () => {
                 day: selectedDate.getDate()
             }
         }).then(response => {
-            console.log(response.data)
             const appointmentsFormatted = response.data.map(appointment => {
                 return {
                     ...appointment,
@@ -146,11 +145,13 @@ const AppointmentPage: React.FC = () => {
         <Container>
             <Header>
                 <HeaderContent>
-                    <Link to="/appointments">
+                    <Link to="/">
                         <FiChevronLeft color="#131313" size={30} />
                     </Link>
 
-                    <img style={{ width: 150, height: 150, marginLeft: 20 }} src={logoImg2} alt="logo"></img>
+                    <Link to="/">
+                        <img style={{ width: 150, height: 150, marginLeft: 20 }} src={logoImg2} alt="logo"></img>
+                    </Link>
 
                     <Profile>
                         <img src={user.avatar_url !== undefined ? user.avatar_url : logoImg} alt=''></img>
@@ -173,7 +174,7 @@ const AppointmentPage: React.FC = () => {
 
                     <Section>
                         {providers.map((item) => {
-                            console.log(item)
+                            console.log(item.avatar)
                             return (
                                 <ProviderContainer onClick={() => {
                                     /**
@@ -185,7 +186,7 @@ const AppointmentPage: React.FC = () => {
                                     setSelectedProvider(item.id)
                                 }}>
                                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <img style={{ marginLeft: 15, width: 65, height: 65, borderRadius: 30 }} src={item.avatar_url !== undefined && item.avatar_url !== undefined ? item.avatar_url : 'https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png'}></img>
+                                        <img alt={item.id} style={{ marginLeft: 15, width: 65, height: 65, borderRadius: 30 }} src={item.avatar === null ? "https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png" : item.avatar} ></img>
                                         <span style={{ marginLeft: 15, color: "#131313" }}>{item.name}</span>
                                     </div>
                                     <div style={{ marginLeft: 'auto', marginRight: 20 }}>
@@ -211,7 +212,7 @@ const AppointmentPage: React.FC = () => {
                                 'Fevereiro',
                                 'Março',
                                 'Abril',
-                                'Maio>',
+                                'Maio',
                                 'Junho',
                                 'Julho',
                                 'Agosto',
@@ -239,7 +240,7 @@ const AppointmentPage: React.FC = () => {
                         ))}
                     </div>
 
-                    <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 50}}>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
                         <CreateAppointmentButton>
                             <CreateAppointmentButtonText>Marcar consulta</CreateAppointmentButtonText>
                         </CreateAppointmentButton>
