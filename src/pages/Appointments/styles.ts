@@ -3,41 +3,8 @@ import { shade } from 'polished'
 
 export const Container = styled.div``
 
-export const Header = styled.header`
-padding: 0;
-border: solid 1px #131313;
-
-`;
-
-export const HeaderContent = styled.div`
-max-width: 1120px;
-margin: 0 auto;
-display: flex;
-align-items: center;
-
-> img{
-    height: 80px;
-}
-
-button{
-    margin-left: auto;
-    background: transparent;
-    border: 0;
-}
-
-svg{
-    color: #999591;
-    width: 20px;
-    height: 20px;
-
-    &:hover{
-        color: #51ddef;
-        }
-}
-`;
-
-export const ProviderContainer = styled.div`
-background: #fff;
+export const ProviderContainer = styled.div<any>`
+background: ${(props) => props.background};
 box-shadow:  7px 7px 14px #e6e6e6, 
              -7px -7px 14px #ffffff;
 display: flex;
@@ -46,6 +13,7 @@ width: 550px;
 height: 100px;
 margin-bottom: 20px;
 border-radius: 20px;
+
 cursor: pointer;
 
 &:hover{
@@ -55,51 +23,15 @@ cursor: pointer;
         }
 `;
 
-
-export const Profile = styled.div`
-display: flex;
-align-items: center;
-margin-left: 80px;
-
-img{
-    width: 63px;
-    height: 63px;
-    border-radius: 50%;
-background: #f7f7f7;
-box-shadow:  7px 7px 14px #e6e6e6, 
-             -7px -7px 14px #ffffff;
-}
-
-div{
-    display: flex;
-    flex-direction: column;
-    margin-left: 16px;
-    line-height: 24px;
-
-    span{
-        color: #f4ede8;
-    }
-
-    a{
-        text-decoration: none;
-        color: #51ddef;
-
-        &:hover{
-            opacity: 0.7;
-        }
-    }
-}
-`;
-
 export const Content = styled.div`
 max-width: 1120px;
 margin: 64px auto;
 display: flex;
 `;
 
-export const HourContainer = styled.button`
+export const HourContainer = styled.button<any>`
 border-radius: 8px;
-background: #ffffff;
+background: ${(props) => props.background};
 box-shadow:  -9px 9px 15px #e5e5e5, 
              9px -9px 15px #fff;
 display: flex;
@@ -209,7 +141,7 @@ margin-bottom: 15px;
 
 .DayPicker:not(.DayPicker--interactionDisabled)
   .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
-  background: ${shade(0.3, '#fff')};
+  background: ${shade(0.1, '#fff')};
   color: #131313;
 }
 
