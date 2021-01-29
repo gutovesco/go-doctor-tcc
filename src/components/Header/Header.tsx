@@ -10,28 +10,29 @@ const Header = (props: any) => {
     const { signOut, user } = useAuth()
     return (
         <MainHeader>
-                <HeaderContent>
+            <HeaderContent>
+                {props.route !== "dashboard" &&
                     <Link to={props.route}>
                         <FiChevronLeft color="#131313" size={30} />
-                    </Link>
+                    </Link>}
 
-                    <Link to="/">
-                        <img style={{ width: 150, height: 150, marginLeft: 20 }} src={logoImg2} alt="logo"></img>
-                    </Link>
+                <Link to="/">
+                    <img style={{ width: 150, height: 150, marginLeft: 20 }} src={logoImg2} alt="logo"></img>
+                </Link>
 
-                    <Profile>
-                        <img src={user.avatar_url !== undefined ? user.avatar_url : logoImg} alt=''></img>
-                        <div>
-                            <span style={{ color: '#131313' }}>Bem-vindo</span>
-                            <Link to="/profile"><strong style={{ color: '#2BC4DA' }}>{user.name}</strong></Link>
-                        </div>
-                    </Profile>
+                <Profile>
+                    <img src={user.avatar_url !== undefined ? user.avatar_url : logoImg} alt=''></img>
+                    <div>
+                        <span style={{ color: '#131313' }}>Bem-vindo</span>
+                        <Link to="/profile"><strong style={{ color: '#2BC4DA' }}>{user.name}</strong></Link>
+                    </div>
+                </Profile>
 
-                    <button type="button" onClick={signOut}>
-                        <FiPower />
-                    </button>
-                </HeaderContent>
-            </MainHeader>
+                <button type="button" onClick={signOut}>
+                    <FiPower />
+                </button>
+            </HeaderContent>
+        </MainHeader>
     )
 }
 

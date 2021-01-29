@@ -1,8 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { Container, Header, HeaderContent, Profile, Content, NextAppointment, Appointment, Section, Calendar, Schedule, AppointmentsTab } from './styles'
-import logoImg from '../../assets/logo.png'
-import logoImg2 from '../../assets/logo4.png'
-import { FiPower, FiClock, FiChevronLeft } from 'react-icons/fi';
+import { Container, Content, NextAppointment, Appointment, Section, Calendar, Schedule } from './styles'
+import { FiClock } from 'react-icons/fi';
 import { useAuth } from '../../hooks/AuthContext';
 import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -10,7 +8,7 @@ import api from '../../services/api';
 import { isToday, format, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { parseISO } from 'date-fns/esm';
-import { Link } from 'react-router-dom';
+import Header from '../../components/Header/Header';
 
 interface MonthAvailability {
     day: number;
@@ -33,7 +31,7 @@ const Dashboard: React.FC = () => {
     const [monthAvailability, setMonthAvailability] = useState<MonthAvailability[]>([])
     const [appointments, setAppointments] = useState<Appointment[]>([])
 
-    const { signOut, user } = useAuth()
+    const { user } = useAuth()
 
     const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
         if (modifiers.available && !modifiers.disabled) {
@@ -65,7 +63,6 @@ const Dashboard: React.FC = () => {
                 day: selectedDate.getDate()
             }
         }).then(response => {
-            console.log(response.data)
             const appointmentsFormatted = response.data.map(appointment => {
                 return {
                     ...appointment,
@@ -118,29 +115,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <Container>
-            <Header>
-                <HeaderContent>
-                
-                    <img style={{ width: 150, height: 150 }} src={logoImg2} alt="logo"></img>
-
-                    <Profile>
-                        <img src={user.avatar_url !== undefined ? user.avatar_url : logoImg} alt=''></img>
-                        <div>
-                            <span style={{ color: '#131313' }}>Bem-vindo</span>
-                            <Link to="/profile"><strong style={{ color: '#2BC4DA' }}>{user.name}</strong></Link>
-                        </div>
-                    </Profile>
-
-                    <Link to="/appointments" style={{ marginLeft: 'auto', marginRight: 25, textDecoration: 'none' }}>
-                        <AppointmentsTab>Agendamentos</AppointmentsTab>
-                    </Link>
-
-                    <button type="button" onClick={signOut}>
-                        <FiPower />
-                    </button>
-                </HeaderContent>
-            </Header>
-
+            <Header route="dashboard"/>
             <Content>
                 <Schedule>
                     <h1 style={{ color: '#131313' }}>Horários Agendados</h1>
@@ -187,7 +162,6 @@ const Dashboard: React.FC = () => {
 
                     <Section>
                         <strong>Tarde</strong>
-                        {console.log(afternoonAppointments)}
                         {afternoonAppointments.length === 0 && (
                             <p>Nenhum agendamento neste período</p>
                         )}
@@ -219,7 +193,7 @@ const Dashboard: React.FC = () => {
                             'Fevereiro',
                             'Março',
                             'Abril',
-                            'Maio>',
+                            'Maio',
                             'Junho',
                             'Julho',
                             'Agosto',

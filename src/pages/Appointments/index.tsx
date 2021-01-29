@@ -1,5 +1,24 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import { Container, Content, ProviderContainer, Section, Calendar, Schedule, HourContainer, CreateAppointmentButton, CreateAppointmentButtonText } from './styles'
+import {
+    Container,
+    Content,
+    ProviderContainer,
+    Section,
+    Calendar,
+    Schedule,
+    HourContainer,
+    CreateAppointmentButton,
+    CreateAppointmentButtonText,
+    Title,
+    ProviderContainerContent,
+    ProviderImage,
+    ProviderName,
+    ProviderIconContainer,
+    TimeOfDayTitle,
+    HoursWrapper,
+    HourText,
+    CreateAppointmentWrapper
+} from './styles'
 import { FiChevronRight } from 'react-icons/fi';
 import { useAuth } from '../../hooks/AuthContext';
 import DayPicker, { DayModifiers } from 'react-day-picker';
@@ -13,16 +32,6 @@ import Header from '../../components/Header/Header'
 interface MonthAvailability {
     day: number;
     available: boolean;
-}
-
-interface Appointment {
-    id: string;
-    date: string;
-    hourFormatted: string;
-    user: {
-        name: string;
-        avatar_url: string;
-    }
 }
 
 interface AvailabilityItem {
@@ -92,26 +101,6 @@ const AppointmentPage: React.FC = () => {
             })
     }, [currentMonth, user.id])
 
-    /**
-     * useEffect(() => {
-        api.get<Appointment[]>('/appointments/me', {
-            params: {
-                year: selectedDate.getFullYear(),
-                month: selectedDate.getMonth() + 1,
-                day: selectedDate.getDate()
-            }
-        }).then(response => {
-            const appointmentsFormatted = response.data.map(appointment => {
-                return {
-                    ...appointment,
-                    hourFormatted: format(parseISO(appointment.date), 'HH:mm')
-                }
-            })
-            setAppointments(appointmentsFormatted)
-        })
-    }, [appointments, selectedDate])
-     */
-
     const disabledDays = useMemo(() => {
         const dates = monthAvailability.filter(monthDay => monthDay.available === false)
             .map(monthDay => {
@@ -147,36 +136,30 @@ const AppointmentPage: React.FC = () => {
             <Header route="/" />
             <Content>
                 <Schedule>
-                    <h1 style={{ color: '#131313' }}>Médicos disponíveis</h1>
+                    <Title>Médicos disponíveis</Title>
                     <Section>
                         {providers.map((item) => {
                             return (
                                 <ProviderContainer
                                     background={selectedProvider === item.id ? "#00d4ff" : "#fff"}
                                     onClick={() => {
-                                        /**
-                                         * history.push({
-                                        pathname: '/appointment-info',
-                                        state: { item: item, selectedDate: selectedDate }
-                                    })
-                                         */
                                         setSelectedProvider(item.id)
                                         setSelectedProviderInfo(item)
                                     }}>
-                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <img alt={item.id} style={{ marginLeft: 15, width: 65, height: 65, borderRadius: 30 }} src={item.avatar === null ? "https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png" : item.avatar} ></img>
-                                        <span style={{ marginLeft: 15, color: selectedProvider === item.id ? "#fff" : "#131313" }}>{item.name}</span>
-                                    </div>
-                                    <div style={{ marginLeft: 'auto', marginRight: 20 }}>
+                                    <ProviderContainerContent>
+                                        <ProviderImage alt={item.id} src={item.avatar === null ? "https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png" : item.avatar} />
+                                        <ProviderName color={selectedProvider === item.id ? "#fff" : "#131313"}>{item.name}</ProviderName>
+                                    </ProviderContainerContent>
+                                    <ProviderIconContainer>
                                         <FiChevronRight color="#e7e7e7" size={30} />
-                                    </div>
+                                    </ProviderIconContainer>
 
                                 </ProviderContainer>
                             )
                         })}
                     </Section>
-
                 </Schedule>
+
                 <Section>
                     <Calendar>
                         <DayPicker weekdaysShort={['D', 'S', 'T', 'Q', 'Q', 'S', 'S']}
@@ -200,25 +183,25 @@ const AppointmentPage: React.FC = () => {
                                 'Dezembro',
                             ]} />
                     </Calendar>
-                    <span style={{ marginTop: 10, marginBottom: 10, color: '#00d4ff', marginLeft: 10, fontSize: 22 }}>Manhã</span>
-                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: 20 }}>
+                    <TimeOfDayTitle>Manhã</TimeOfDayTitle>
+                    <HoursWrapper>
                         {morningAvailability.map(({ hour, hourFormatted, available }) => (
-                            <HourContainer background={selectedHour === hour && available ? "#00d4ff" : "#fff"} key={hourFormatted} onClick={() => setSelectedHour(hour)}>
-                                <span style={{ margin: 'auto', color: selectedHour === hour ? "#fff" : "#131313" }}>{hourFormatted}</span>
+                            <HourContainer background={selectedHour === hour && available ? "#00d4ff" : "#fff"} key={hourFormatted} onClick={() => available ? setSelectedHour(hour) : console.log('hora invalida')}>
+                                <HourText color={selectedHour === hour && available ? "#fff" : "#131313"}>{hourFormatted}</HourText>
                             </HourContainer>
                         ))}
-                    </div>
+                    </HoursWrapper>
 
-                    <span style={{ marginTop: 10, marginBottom: 10, color: '#00d4ff', marginLeft: 10, fontSize: 22 }}>Tarde</span>
-                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <TimeOfDayTitle>Tarde</TimeOfDayTitle>
+                    <HoursWrapper>
                         {afternoonAvailability.map(({ hour, hourFormatted, available }) => (
-                            <HourContainer background={selectedHour === hour && available ? "#00d4ff" : "#fff"} key={hourFormatted} onClick={() => setSelectedHour(hour)}>
-                                <span style={{ margin: 'auto', color: selectedHour === hour ? "#fff" : "#131313" }}>{hourFormatted}</span>
+                            <HourContainer background={selectedHour === hour && available ? "#00d4ff" : "#fff"} key={hourFormatted} onClick={() => available ? setSelectedHour(hour) : console.log('hora invalida')}>
+                                <HourText color={selectedHour === hour && available ? "#fff" : "#131313"}>{hourFormatted}</HourText>
                             </HourContainer>
                         ))}
-                    </div>
+                    </HoursWrapper>
 
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
+                    <CreateAppointmentWrapper>
                         <CreateAppointmentButton>
                             <CreateAppointmentButtonText onClick={() => {
                                 history.push({
@@ -227,7 +210,7 @@ const AppointmentPage: React.FC = () => {
                                 })
                             }}>Marcar consulta</CreateAppointmentButtonText>
                         </CreateAppointmentButton>
-                    </div>
+                    </CreateAppointmentWrapper>
                 </Section>
             </Content>
         </Container>

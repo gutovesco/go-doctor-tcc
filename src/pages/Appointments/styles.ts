@@ -175,3 +175,57 @@ width: 500px;
     margin-bottom: 16px;
 }
 `;
+
+export const Title = styled.h1`
+color: #131313;
+`;
+
+export const ProviderContainerContent = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+align-items: center;
+`;
+
+export const ProviderImage = styled.img`
+margin-left: 15px;
+width: 65px;
+height: 65px;
+border-radius: 30px;
+`;
+
+export const ProviderName = styled.span`
+margin-left: 15px;
+color: ${(props) => props.color};
+`;
+
+export const ProviderIconContainer = styled.div`
+margin-left: auto;
+margin-right: 20px;
+`;
+
+export const TimeOfDayTitle = styled.span`
+margin-top: 10px;
+margin-bottom: 10px;
+color: #00d4ff;
+font-size: 22px;
+margin-left: 10px;
+`;
+
+export const HoursWrapper = styled.div`
+display: flex;
+flex-direction: row;
+margin-bottom: 20px;
+`;
+
+export const HourText = styled.span`
+margin: auto;
+color: ${(props) => props.color};
+`;
+
+export const CreateAppointmentWrapper = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 50px;
+`;

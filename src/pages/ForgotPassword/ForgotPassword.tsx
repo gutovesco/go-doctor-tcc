@@ -1,17 +1,16 @@
 import React, { useCallback, useRef, useState} from 'react';
-import {Form} from '@unform/web'
+import {Form} from '@unform/web';
 import { Container, Content, Background, AnimationContainer } from './styles';
-import Input from '../../components/Input/Input'
-import Button from '../../components/Button/Button'
-import {FiLogIn, FiMail} from 'react-icons/fi'
-import {FormHandles} from '@unform/core'
-import * as Yup from 'yup'
-import getValidationErrors from '../../utils/getValidationErrors'
-import {useAuth} from '../../hooks/AuthContext'
-import {useToast} from '../../hooks/Toast'
-import {Link, useHistory} from 'react-router-dom'
+import Input from '../../components/Input/Input';
+import Button from '../../components/Button/Button';
+import {FiLogIn, FiMail} from 'react-icons/fi';
+import {FormHandles} from '@unform/core';
+import * as Yup from 'yup';
+import getValidationErrors from '../../utils/getValidationErrors';
+import {useToast} from '../../hooks/Toast';
+import {Link, useHistory} from 'react-router-dom';
 import api from '../../services/api';
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
 
 interface ForgotPasswordFormData{
     email: string;
@@ -22,11 +21,8 @@ const ForgotPassword: React.FC = () => {
     const [loading, setLoading] = useState(false)
     const formRef = useRef<FormHandles>(null)
 
-    const {user} = useAuth();
     const {addToast} = useToast();
     const history = useHistory()
-
-    console.log(user)
 
     const handleSubmit = useCallback(async (data: ForgotPasswordFormData) => {
         try{
