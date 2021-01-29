@@ -28,6 +28,10 @@ const Header = (props: any) => {
                     </div>
                 </Profile>
 
+                <Link style={{textDecoration: 'none', marginLeft: 'auto'}} to="/appointments">
+                    <strong>Agendamentos</strong>
+                </Link>
+
                 <button type="button" onClick={signOut}>
                     <FiPower />
                 </button>

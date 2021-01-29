@@ -16,9 +16,18 @@ align-items: center;
 }
 
 button{
-    margin-left: auto;
     background: transparent;
     border: 0;
+}
+
+strong{
+    text-decoration: none;
+    color: #131313;
+    margin-right: 30px;
+
+    &:hover{
+        color: #51ddef;
+        }
 }
 
 svg{
