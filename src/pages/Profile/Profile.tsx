@@ -106,7 +106,7 @@ const Profile: React.FC = () => {
         <Container>
             <header>
                 <div>
-                    <Link to="/dashboard"><FiArrowLeft></FiArrowLeft></Link>
+                    <Link aria-label="dashboard" to="/dashboard"><FiArrowLeft></FiArrowLeft></Link>
                 </div>
             </header>
             <Content>
@@ -117,7 +117,7 @@ const Profile: React.FC = () => {
                 }} onSubmit={handleSubmit} >
 
                     <AvatarInput>
-                        <img src={user.avatar_url} alt={user.name}></img>
+                        <img width={186} height={186} src={user.avatar_url} alt={user.name}></img>
                         <label htmlFor="avatar">
                             <FiCamera />
                             <input type="file" id="avatar" onChange={handleAvatarChange}></input>
@@ -132,7 +132,7 @@ const Profile: React.FC = () => {
                     <Input containerStyle={{ marginTop: 24 }} name="old_password" icon={FiLock} placeholder="Senha atual" type="password"></Input>
                     <Input name="password" icon={FiLock} placeholder="Nova senha" type="password"></Input>
                     <Input name="password_confirmation" icon={FiLock} placeholder="Confirmar senha" type="password"></Input>
-                    <Button type="submit">Confirmar mudanças</Button>
+                    <Button aria-label="confirmChanges" type="submit">Confirmar mudanças</Button>
                 </Form>
             </Content>
         </Container>

@@ -83,10 +83,10 @@ const ResetPassword: React.FC = () => {
                         <h1 style={{color: '#2BC4DA'}}>Resetar senha</h1>
                         <Input name="password" icon={FiLock} placeholder="Nova senha" type="password"></Input>
                         <Input name="password_confirmation" icon={FiLock} placeholder="Confirmação da senha" type="password"></Input>
-                        <Button type="submit">Alterar senha</Button>
+                        <Button aria-label="changePassword" type="submit">Alterar senha</Button>
 
                     </Form>
-                    <Link to="/"><FiLogIn/>Voltar para o login</Link>
+                    <Link aria-label="goBackToLogin" to="/"><FiLogIn/>Voltar para o login</Link>
                 </AnimationContainer> 
             </Content>
             <Background></Background>

@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Container, Content, CreateAppointmentButton, ErrorText, CreateAppointmentButtonText, ProviderImage, ProviderName } from './styles'
 import { useLocation, useHistory, } from 'react-router-dom';
 import Header from '../../components/Header/Header'
-
+import api from '../../services/api';
+import { useToast } from '../../hooks/Toast'
+import avatar from '../../assets/avatar.png';
 export interface Provider {
     id: string;
     name: string;
@@ -13,43 +15,55 @@ export interface Provider {
 const AppointmentInfo: React.FC = () => {
     const location = useLocation();
     const history = useHistory()
-
-    /**
-     * const handleCreateAppointment = useCallback(async () => {
-        try{
-          const date = new Date(selectedDate)
-    
-          date.setHours(selectedHour)
-          date.setMinutes(0)
-    
-          await api.post('appointments', {
-            provider_id: selectedProvider,
-            date,
-          })
-    
-          console.log('appointment criado')
-    
-          navigate('AppointmentCreated', {date: date.getTime()})
-        }catch(err){
-          Alert.alert('Erro ao criar agendamento', 'Ocorreu um erro ao criar o agendamento, tente novamente.')
-        }
-      }, [navigate, selectedDate, selectedHour, selectedProvider])
-     */
+    const { addToast } = useToast();
 
     const params: any = location.state
     let component;
 
+    const handleCreateAppointment = useCallback(async () => {
+        try {
+            const date = new Date(params.selectedDate)
+
+            date.setHours(params.selectedHour)
+            date.setMinutes(0)
+
+            await api.post('appointments', {
+                provider_id: params.providerId,
+                date,
+            }).then(() => {
+                addToast({
+                    type: 'success',
+                    title: 'Concluído',
+                    description: 'O seu agendamento foi criado com sucesso!'
+                });
+
+                history.push({
+                    pathname: '/',
+                    state: {}
+                })
+            })
+
+        } catch (err) {
+            console.log(err.message)
+            addToast({
+                type: 'error',
+                title: 'Erro',
+                description: 'Ocorreu um erro ao criar o seu agendamento, é possível que o horário não esteja mais disponíve!'
+            });
+        }
+    }, [addToast, history, params.providerId, params.selectedDate, params.selectedHour])
+
     if (params && params.item) {
-        const { name, avatar } = params.item;
+        const { name } = params.item;
 
         component =
             <Container>
                 <Header route="appointments" />
                 <Content>
-                    <ProviderImage alt='' src={avatar === null ? 'https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png' : avatar} />
+                    <ProviderImage alt='' src={avatar === null ? avatar : params.item.avatar} />
                     <ProviderName>{name}</ProviderName>
 
-                    <CreateAppointmentButton>
+                    <CreateAppointmentButton aria-label="confirmAppointment" onClick={() => handleCreateAppointment()}>
                         <CreateAppointmentButtonText>Confirmar consulta</CreateAppointmentButtonText>
                     </CreateAppointmentButton>
                 </Content>
@@ -60,10 +74,10 @@ const AppointmentInfo: React.FC = () => {
                 <Header route="appointments" />
                 <Content>
                     <ErrorText>Ocorreu um erro</ErrorText>
-                    <CreateAppointmentButton>
-                        <CreateAppointmentButtonText onClick={() => {
-                            history.push({ pathname: '/appointments', })
-                        }}>Voltar</CreateAppointmentButtonText>
+                    <CreateAppointmentButton aria-label="goBack" onClick={() => {
+                        history.push({ pathname: '/appointments', })
+                    }}>
+                        <CreateAppointmentButtonText>Voltar</CreateAppointmentButtonText>
                     </CreateAppointmentButton>
                 </Content>
             </Container>

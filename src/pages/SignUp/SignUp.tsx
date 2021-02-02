@@ -72,10 +72,10 @@ const SignUp: React.FC = () => {
                     <Input name="name" icon={FiUser} placeholder="Nome"></Input>
                     <Input name="email" icon={FiMail} placeholder="Email"></Input>
                     <Input name="password" icon={FiLock} placeholder="Senha" type="password"></Input>
-                    <Button type="submit">Cadastrar</Button>
+                    <Button aria-label="register" type="submit">Cadastrar</Button>
                 </Form>
 
-                <Link to="/"><FiArrowLeft/>Voltar para logon</Link>
+                <Link aria-label="goBackToLogon" to="/"><FiArrowLeft/>Voltar para logon</Link>
                 </AnimationContainer>
             </Content>
         </Container>

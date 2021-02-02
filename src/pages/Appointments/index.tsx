@@ -25,9 +25,9 @@ import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import api from '../../services/api';
 import { format } from 'date-fns';
-//import { parseISO } from 'date-fns/esm';
 import { useHistory } from 'react-router-dom';
 import Header from '../../components/Header/Header'
+import avatar from '../../assets/avatar.png';
 
 interface MonthAvailability {
     day: number;
@@ -52,7 +52,6 @@ const AppointmentPage: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [currentMonth, setCurrentMonth] = useState(new Date())
     const [monthAvailability, setMonthAvailability] = useState<MonthAvailability[]>([])
-    //const [appointments, setAppointments] = useState<Appointment[]>([])
     const [providers, setProviders] = useState<Provider[]>([])
     const [availability, setAvailability] = useState<AvailabilityItem[]>([])
     const [selectedProvider, setSelectedProvider] = useState(user.id)
@@ -141,13 +140,14 @@ const AppointmentPage: React.FC = () => {
                         {providers.map((item) => {
                             return (
                                 <ProviderContainer
+                                key={item.id}
                                     background={selectedProvider === item.id ? "#00d4ff" : "#fff"}
                                     onClick={() => {
                                         setSelectedProvider(item.id)
                                         setSelectedProviderInfo(item)
                                     }}>
                                     <ProviderContainerContent>
-                                        <ProviderImage alt={item.id} src={item.avatar === null ? "https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png" : item.avatar} />
+                                        <ProviderImage alt='' src={item.avatar === null ? avatar : item.avatar} />
                                         <ProviderName color={selectedProvider === item.id ? "#fff" : "#131313"}>{item.name}</ProviderName>
                                     </ProviderContainerContent>
                                     <ProviderIconContainer>
@@ -202,13 +202,13 @@ const AppointmentPage: React.FC = () => {
                     </HoursWrapper>
 
                     <CreateAppointmentWrapper>
-                        <CreateAppointmentButton>
-                            <CreateAppointmentButtonText onClick={() => {
+                        <CreateAppointmentButton aria-label="confirmAppointment" onClick={() => {
                                 history.push({
                                     pathname: '/appointment-info',
                                     state: { providerId: selectedProvider, selectedDate: selectedDate, selectedHour: selectedHour, item: selectedProviderInfo }
                                 })
-                            }}>Marcar consulta</CreateAppointmentButtonText>
+                            }}>
+                            <CreateAppointmentButtonText>Marcar consulta</CreateAppointmentButtonText>
                         </CreateAppointmentButton>
                     </CreateAppointmentWrapper>
                 </Section>

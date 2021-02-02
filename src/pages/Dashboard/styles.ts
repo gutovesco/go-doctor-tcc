@@ -112,8 +112,8 @@ span{
     align-items: center;
     padding: 16px 16px;
     border-radius: 11px;
-background: #f7f7f7;
-box-shadow:  9px 9px 18px #e3e3e3, 
+    background: #fff;
+    box-shadow:  9px 9px 18px #e3e3e3, 
              -9px -9px 18px #ffffff;
     margin-left: 24px;
     }
@@ -175,7 +175,7 @@ export const Calendar = styled.aside`
 
 .DayPicker:not(.DayPicker--interactionDisabled)
   .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--outside):hover {
-  background: ${shade(0.3, '#fff')};
+  background: ${shade(0.1, '#fff')};
   color: #131313;
 }
 

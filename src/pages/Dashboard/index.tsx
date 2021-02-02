@@ -9,6 +9,7 @@ import { isToday, format, isAfter } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { parseISO } from 'date-fns/esm';
 import Header from '../../components/Header/Header';
+import avatar from '../../assets/avatar.png';
 
 interface MonthAvailability {
     day: number;
@@ -103,7 +104,7 @@ const Dashboard: React.FC = () => {
 
     const afternoonAppointments = useMemo(() => {
         return appointments.filter(appointment => {
-            return parseISO(appointment.date).getHours() > 10
+            return parseISO(appointment.date).getHours() > 11
         })
     }, [appointments])
 
@@ -129,7 +130,7 @@ const Dashboard: React.FC = () => {
                         <NextAppointment>
                             <strong>Agendamento a seguir</strong>
                             <div>
-                                <img src={nextAppointment.user.avatar_url} alt={nextAppointment.user.name}></img>
+                                <img width={80} height={80} src={nextAppointment.user.avatar_url} alt={nextAppointment.user.name}></img>
                                 <strong>{nextAppointment.user.name}</strong>
                                 <span>
                                     <FiClock />
@@ -152,8 +153,8 @@ const Dashboard: React.FC = () => {
                                     <FiClock />
                                     {appointment.hourFormatted}
                                 </span>
-                                <div>
-                                    <img src={appointment.user.avatar_url === null ? 'https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg?ssl=1' : appointment.user.avatar_url} alt={appointment.user.name}></img>
+                                <div>   
+                                    <img width={56} height={56} src={appointment.user.avatar_url === null ? avatar : appointment.user.avatar_url} alt={appointment.user.name}></img>
                                     <strong>{appointment.user.name}</strong>
                                 </div>
                             </Appointment>
@@ -173,7 +174,7 @@ const Dashboard: React.FC = () => {
                                     {appointment.hourFormatted}
                                 </span>
                                 <div>
-                                    <img src={appointment.user.avatar_url === null ? 'https://i0.wp.com/www.mvhsoracle.com/wp-content/uploads/2018/08/default-avatar.jpg?ssl=1' : appointment.user.avatar_url} alt={appointment.user.name}></img>
+                                    <img width={56} height={56} src={appointment.user.avatar_url === null ? "https://www.pngitem.com/pimgs/m/421-4212266_transparent-default-avatar-png-default-avatar-images-png.png" : appointment.user.avatar_url} alt={appointment.user.name}></img>
                                     <strong>{appointment.user.name}</strong>
                                 </div>
                             </Appointment>

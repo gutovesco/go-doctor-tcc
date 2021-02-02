@@ -50,9 +50,6 @@ img{
     width: 63px;
     height: 63px;
     border-radius: 50%;
-background: #f7f7f7;
-box-shadow:  7px 7px 14px #e6e6e6, 
-             -7px -7px 14px #ffffff;
 }
 
 div{

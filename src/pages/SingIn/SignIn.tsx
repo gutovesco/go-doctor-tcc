@@ -72,11 +72,11 @@ const SignIn: React.FC = () => {
                                 <h1 style={{ color: primaryColor }}>Faça seu logon</h1>
                                 <Input name="email" icon={FiMail} placeholder="Email"></Input>
                                 <Input name="password" icon={FiLock} placeholder="Senha" type="password"></Input>
-                                <Button type="submit">Entrar</Button>
+                                <Button aria-label="login" type="submit">Entrar</Button>
 
                                 <a href="forgot">Esqueci minha senha</a>
                             </Form>
-                            <Link to="/signup"><FiLogIn />Criar conta</Link>
+                            <Link aria-label="createAccount" to="/signup"><FiLogIn />Criar conta</Link>
                         </AnimationContainer>
                     </Content>
                     <Background></Background>
